@@ -13,45 +13,78 @@
     <script type="text/javascript" src="lib/js/index.js"></script>
     <script type="text/javascript" src="lib/js/bundle.js"></script>
 
+    <h2>BSNC Javascrip API</h2>
+    <h5>v1.0.1</h5>
+    <p>BSNC Javascript API for HerIOT. You can test both encrypt private key using password and just private key.</p>
+    <p>When you use Encrypt Test case, the password is essential parameter at 'createKeypairs', 'decryptPrivatekey' and
+        'sign' Method.</p>
+    <p>And also message is essential parameter at 'sign' and 'verify'</p>
+    <hr>
 
-    <h3>비밀번호 입력 방식</h3>
-    <p>Password
-        <input id="password" type="password">
+    <h3>Encrypt Test Case</h3>
+
+    <p style="color:red">Password
+        <input id="password" type="password"/>
         <button onclick="createKeypairswithpwdBtn()">createKeypairs</button>
     </p>
-    <p id="compressedPubkeyPW"></p>
-    <p id="uncompressedPubkeyPW"></p>
-    <p id="encryptPrivkeyPW"></p>
 
-    <p>개인키 복호화
-        <button onclick="decryptPrivkeyBtn()">decryptPrivatekey</button></p>
-    <p id="decryptPrivkeyPW"></p>
+    <p>Compressed Public key : &nbsp; &nbsp;&nbsp;
+        <input id="compressedPubkeyPw" type="text" size="50" readonly />
+    </p>
+    <p>Uncompressed Public Key :
+        <input id="uncompressedPubkeyPw" type="text" size="120" readonly />
+    </p>
+    <p>Encrypt Private Key : &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <input id="encryptPrivkeyPw" type="text" size="130" readonly />
+    </p>
 
-    <p>Message
-        <input id="messagePW" type="text">
-        <button onclick="signEncryptPrivatekey()">sign</button></p>
-    <p id="signedDataPW"></p>
+    <p>Decrypt Private Key :
+        <button onclick="decryptPrivkeyBtn()">decryptPrivatekey</button>
+    </p>
+    <p>Decrypted Private Key :
+        <input id="decryptPrivkeyPw" type="text" size="100" readonly />
+    </p>
 
-    <p>검증
+    <p style="color:red">Message
+        <input id="messagePw" type="text" />
+        <button onclick="signEncryptPrivatekey()">sign</button>
+    </p>
+
+    <p>Signed Data :
+        <input id="signedDataPw" type="text" size="130" readonly />
+    </p>
+
+    <p>Verify
         <button onclick="verifyEncryptedPrivatekey()">verify</button></p>
     <p id="verifyPW"></p>
     <hr>
 
 
-    <h3>비밀번호 없이 진행</h3>
+    <h3>Normal Test Case(without password)</h3>
     <button onclick="createKeypairsBtn()">createKeypairs</button>
-    <p id="compressedPubkey"></p>
-    <p id="uncompressedPubkey"></p>
-    <p id="privatekey"></p>
 
-    <p>Message
+    <p>Compressed Public key : &nbsp; &nbsp;&nbsp;
+        <input id="compressedPubkey" type="text" size="50" readonly />
+    </p>
+    <p>Uncompressed Public Key :
+        <input id="uncompressedPubkey" type="text" size="120" readonly />
+    </p>
+    <p>Encrypt Private Key : &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        <input id="privatekey" type="text" size="60" readonly />
+    </p>
+
+    <p style="color:red">Message
         <input id="message" type="text">
         <button onclick="sign()">sign</button></p>
-    <p id="signedData"></p>
 
-    <p>검증
+    <p>Signed Data :
+        <input id="signedData" type="text" size="130" readonly />
+    </p>
+
+    <p>Verify
         <button onclick="verify()">verify</button></p>
     <p id="verify"></p>
+    <hr>
 
 </head>
 
@@ -62,28 +95,27 @@
             var password = document.getElementById("password").value
             if (pwdCheck(password) == true) {
                 let keyPairs = createEncryptKeypairs(password)
-                document.getElementById("compressedPubkeyPW").innerHTML = "Compressed Public Key : " + keyPairs.compressedPubkey
-                document.getElementById("uncompressedPubkeyPW").innerHTML = "Uncompressed Public Key : " + keyPairs.uncompressedPubkey
+                document.getElementById("compressedPubkeyPw").value = keyPairs.compressedPubkey
+                document.getElementById("uncompressedPubkeyPw").value = keyPairs.uncompressedPubkey
                 module.encryptPrivatekey(keyPairs.privatekey, password).then((encryptPrivkey) => {
-                    document.getElementById("encryptPrivkeyPW").innerHTML = "Encrypted Private Key : " + encryptPrivkey
+                    document.getElementById("encryptPrivkeyPw").value = encryptPrivkey
                 })
             }
         }
 
         function createKeypairsBtn() {
             let keyPairs = createKeypairs()
-            document.getElementById("compressedPubkey").innerHTML = "Compressed Public Key : " + keyPairs.compressedPubkey
-            document.getElementById("uncompressedPubkey").innerHTML = "Uncompressed Public Key : " + keyPairs.uncompressedPubkey
-            document.getElementById("privatekey").innerHTML = "Private Key : " + keyPairs.privatekey
+            document.getElementById("compressedPubkey").value = keyPairs.compressedPubkey
+            document.getElementById("uncompressedPubkey").value = keyPairs.uncompressedPubkey
+            document.getElementById("privatekey").value = keyPairs.privatekey
         }
 
         function decryptPrivkeyBtn() {
-            let encryptPrivkey = document.getElementById("encryptPrivkeyPW").innerHTML
-            encryptPrivkey = encryptPrivkey.slice(24)
+            let encryptPrivkey = document.getElementById("encryptPrivkeyPw").value
             let password = document.getElementById("password").value
             if (pwdCheck(password) == true) {
                 module.decryptPrivatekey(encryptPrivkey, password).then((decryptedPrivkey) => {
-                    document.getElementById("decryptPrivkeyPW").innerHTML = "Decrypted Private Key : " + decryptedPrivkey
+                    document.getElementById("decryptPrivkeyPw").value = decryptedPrivkey
                 })
             }
         }
@@ -91,14 +123,13 @@
         function signEncryptPrivatekey() {
             let password = document.getElementById("password").value
             if (pwdCheck(password) == true) {
-                let encryptPrivkey = document.getElementById("encryptPrivkeyPW").innerHTML
-                encryptPrivkey = encryptPrivkey.slice(24)
-                let message = document.getElementById("messagePW").value
-		        if(msgCheck(message) == true) {
+                let encryptPrivkey = document.getElementById("encryptPrivkeyPw").value
+                let message = document.getElementById("messagePw").value
+                if (msgCheck(message) == true) {
                     module.decryptPrivatekey(encryptPrivkey, password).then((decryptedPrivkey) => {
                         let privatekey = decryptedPrivkey
                         module.sign(privatekey, message).then((signedData) => {
-                            document.getElementById("signedDataPW").innerHTML = "Signed Data : " + signedData.toString('hex')
+                            document.getElementById("signedDataPw").value = signedData.toString('hex')
                         })
                     })
                 }
@@ -106,36 +137,31 @@
         }
 
         function sign() {
-            let privatekey = document.getElementById("privatekey").innerHTML
-            privatekey = privatekey.slice(14)
+            let privatekey = document.getElementById("privatekey").value
             let message = document.getElementById("message").value
-            if(msgCheck(message) == true) {
+            if (msgCheck(message) == true) {
                 module.sign(privatekey, message).then((signedData) => {
-                    document.getElementById("signedData").innerHTML = "Signed Data : " + signedData.toString('hex')
+                    document.getElementById("signedData").value = signedData.toString('hex')
                 })
-            } 
+            }
         }
 
         function verifyEncryptedPrivatekey() {
-            let uncompressedPubkey = document.getElementById("uncompressedPubkeyPW").innerHTML
-            uncompressedPubkey = uncompressedPubkey.slice(26)
-            let message = document.getElementById("messagePW").value
-            if(msgCheck(message) == true) {
-                let signedData = document.getElementById("signedDataPW").innerHTML
-                signedData = signedData.slice(14)
+            let uncompressedPubkey = document.getElementById("uncompressedPubkeyPw").value
+            let message = document.getElementById("messagePw").value
+            if (msgCheck(message) == true) {
+                let signedData = document.getElementById("signedDataPw").value
                 module.verify(uncompressedPubkey, message, signedData).then((result) => {
                     document.getElementById("verifyPW").innerHTML = result
                 })
-            } 
+            }
         }
 
         function verify() {
-            let uncompressedPubkey = document.getElementById("uncompressedPubkey").innerHTML
-            uncompressedPubkey = uncompressedPubkey.slice(26)
+            let uncompressedPubkey = document.getElementById("uncompressedPubkey").value
             let message = document.getElementById("message").value
-            if(msgCheck(message) == true) {
-                let signedData = document.getElementById("signedData").innerHTML
-                signedData = signedData.slice(14)
+            if (msgCheck(message) == true) {
+                let signedData = document.getElementById("signedData").value
                 module.verify(uncompressedPubkey, message, signedData).then((result) => {
                     document.getElementById("verify").innerHTML = result
                 })
@@ -149,8 +175,8 @@
                 alert("password isn't set")
         }
 
-	    function msgCheck(message) {
-	        if (message != "")
+        function msgCheck(message) {
+            if (message != "")
                 return true
             else
                 alert("message is at least more than a letter")
@@ -158,5 +184,7 @@
 
     </script>
 </body>
+<p>To ask for help with more implemantation questions, please send a mail for us <a
+        href="mailto:justinwk11@hd-bsnc.com">BSNC 융합기술 연구소</a></p>
 
 </html>
