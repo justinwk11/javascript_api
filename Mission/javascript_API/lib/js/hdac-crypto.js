@@ -24958,9 +24958,6 @@ function pad_with_zeroes(number, length) {
   return retval;
 }
 
-const prime = new bigInt('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F', 16),
-  pIdent = prime.add(1).divide(4);
-
 /**
  * Point decompress secp256k1 curve
  * @param {string} Compressed representation in hex string
@@ -25007,9 +25004,16 @@ exports.sign = function (privatekey, msg) {
   return new promise(function (resolve) {
     assert(msgBuf.length > 0, "Message should not be empty");
     assert(msgBuf.length <= 32, "Message is too long");
-    msgBuf = pad32(msgBuf);
-    var sig = secp256k1.signSync(msgBuf, privatekeyBuf).signature;
+    //var msgBuffer = pad32(msgBuf);
+    
+    let sha256Msg = CryptoJS.SHA256(msgBuf)
+    let sha256MsgBuf = new Buffer.from(sha256Msg.toString(), 'hex')
+    console.log(sha256MsgBuf.toString('hex'))
+
+    var sig = secp256k1.signSync(sha256MsgBuf, privatekeyBuf).signature;
     var sigExport = secp256k1.signatureExport(sig);
+    console.log(sigExport.toString('hex'))
+
     resolve(sigExport);
   });
 };
@@ -25030,9 +25034,11 @@ exports.verify = function (publicKey, msg, sig) {
   return new promise(function (resolve, reject) {
     assert(msgBuf.length > 0, "Message should not be empty");
     assert(msgBuf.length <= 32, "Message is too long");
-    msgBuf = pad32(msgBuf);
+    //msgBuf = pad32(msgBuf);
+    let sha256Msg = CryptoJS.SHA256(msgBuf)
+    let sha256MsgBuf = new Buffer.from(sha256Msg.toString(), 'hex')
     sigBuf = secp256k1.signatureImport(sigBuf);
-    if (secp256k1.verifySync(msgBuf, sigBuf, publicKeyBuf)) {
+    if (secp256k1.verifySync(sha256MsgBuf, sigBuf, publicKeyBuf)) {
       resolve("Verify Success");
     } else {
       reject(new Error("Bad signature"));

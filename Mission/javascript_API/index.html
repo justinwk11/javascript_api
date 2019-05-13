@@ -11,14 +11,14 @@
     <script type="text/javascript" src="lib/js/bitcoinjs.min.js"></script>
     <script type="text/javascript" src="lib/js/big-integer.min.js"></script>
     <script type="text/javascript" src="lib/js/index.js"></script>
-    <script type="text/javascript" src="lib/js/hdac-crpyto.js"></script>
+    <script type="text/javascript" src="lib/js/hdac-crypto.js"></script>
 
     <h2>BSNC Javascrip API</h2>
     <h5>v1.0.1</h5>
     <p>BSNC Javascript API for HerIOT. You can test both encrypt private key using password and just private key.</p>
     <p>When you use Encrypt Test case, the password is essential parameter at 'createKeypairs', 'decryptPrivatekey' and
         'sign' Method.</p>
-    <p>And also message is essential parameter at 'sign' and 'verify'.</p>
+    <p>And also message is essential parameter at 'sign' and 'verify' method.</p>
     <hr>
 
     <h3>Encrypt Test Case</h3>
@@ -29,20 +29,20 @@
     </p>
 
     <p>Compressed Public key : &nbsp; &nbsp;&nbsp;
-        <input id="compressedPubkeyPw" type="text" size="50" readonly />
+        <input id="compressedPubkeyPw" type="text" size="70"/>
     </p>
     <p>Uncompressed Public Key :
-        <input id="uncompressedPubkeyPw" type="text" size="120" readonly />
+        <input id="uncompressedPubkeyPw" type="text" size="120"/>
     </p>
     <p>Encrypt Private Key : &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-        <input id="encryptPrivkeyPw" type="text" size="130" readonly />
+        <input id="encryptPrivkeyPw" type="text" size="130"/>
     </p>
 
     <p>Decrypt Private Key :
         <button onclick="decryptPrivkeyBtn()">decryptPrivatekey</button>
     </p>
     <p>Decrypted Private Key :
-        <input id="decryptPrivkeyPw" type="text" size="100" readonly />
+        <input id="decryptPrivkeyPw" type="text" size="100"/>
     </p>
 
     <p style="color:red">Message
@@ -51,7 +51,7 @@
     </p>
 
     <p>Signed Data :
-        <input id="signedDataPw" type="text" size="130" readonly />
+        <input id="signedDataPw" type="text" size="130"/>
     </p>
 
     <p>Verify
@@ -64,13 +64,13 @@
     <button onclick="createKeypairsBtn()">createKeypairs</button>
 
     <p>Compressed Public key : &nbsp; &nbsp;&nbsp;
-        <input id="compressedPubkey" type="text" size="50" readonly />
+        <input id="compressedPubkey" type="text" size="50"/>
     </p>
     <p>Uncompressed Public Key :
-        <input id="uncompressedPubkey" type="text" size="120" readonly />
+        <input id="uncompressedPubkey" type="text" size="120"/>
     </p>
     <p>Encrypt Private Key : &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-        <input id="privatekey" type="text" size="60" readonly />
+        <input id="privatekey" type="text" size="60"/>
     </p>
 
     <p style="color:red">Message
@@ -78,7 +78,7 @@
         <button onclick="sign()">sign</button></p>
 
     <p>Signed Data :
-        <input id="signedData" type="text" size="130" readonly />
+        <input id="signedData" type="text" size="130"/>
     </p>
 
     <p>Verify
