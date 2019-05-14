@@ -25004,16 +25004,15 @@ exports.sign = function (privatekey, msg) {
   return new promise(function (resolve) {
     assert(msgBuf.length > 0, "Message should not be empty");
     assert(msgBuf.length <= 32, "Message is too long");
-    //var msgBuffer = pad32(msgBuf);
+    var msgBuffer = pad32(msgBuf);
     
-    let sha256Msg = CryptoJS.SHA256(msgBuf)
+    /*let sha256Msg = CryptoJS.SHA256(msgBuf)
     let sha256MsgBuf = new Buffer.from(sha256Msg.toString(), 'hex')
-    console.log(sha256MsgBuf.toString('hex'))
+    console.log(sha256MsgBuf)*/
 
-    var sig = secp256k1.signSync(sha256MsgBuf, privatekeyBuf).signature;
+    var sig = secp256k1.signSync(msgBuffer, privatekeyBuf).signature;
     var sigExport = secp256k1.signatureExport(sig);
-    console.log(sigExport.toString('hex'))
-
+        
     resolve(sigExport);
   });
 };

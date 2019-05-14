@@ -72,7 +72,7 @@ let createKeypairs = function () {
   _SUBMIT.scriptPubKey = node.keyPair.getPublicKey();
 
   let keypairs = {
-    compressedPubkey : node.keyPair.getPublicKey(),
+    compressedPubkey : node.keyPair.getPublicKeyBuffer().toString('hex'),
     uncompressedPubkey: node.keyPair.getPublicKeyBufferUnCompressed().toString('hex'),
     privatekey: node.keyPair.d.toHex()
   }
